@@ -1,6 +1,10 @@
+'''
+MACD - Piotr Trybisz
+'''
 from enum import Enum
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 class MACD:
 	stock_name = 'NOT_INIT'
@@ -150,9 +154,7 @@ class MACD:
 		final = self.money_balance.iloc[-1] + self.instrument_balance.iloc[-1] * self.data.iloc[-1]
 		print(f'Final balance: {final:.2f} PLN')
 		print(f'Profit: {final - initial_balance*self.data.iloc[0]:.2f} PLN')
-		#print(active_operations.to_string())
 		sell_operations = active_operations[active_operations["type"] == self.Operation.SELL]
-		#print(sum(sell_operations["profit"]))
 		with open(f'logs/{self.stock_name}_buysell_dT{self.improve_delay}.csv', 'w') as f:
 			f.write('"No.", "Buy date", "Buy price", "Sell date", "Sell price", "Profit"\n')
 			for i in range(len(sell_operations)):
@@ -218,6 +220,8 @@ class MACD:
 		plt.close()
 
 if __name__ == '__main__':
+	os.makedirs('plots', exist_ok=True)
+	os.makedirs('logs', exist_ok=True)
 	macd_usd = MACD('usdpln', count=1000)
 	macd_usd.print_data_graph()
 	macd_usd.calculate_macd()
