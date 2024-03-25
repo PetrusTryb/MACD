@@ -41,7 +41,7 @@ class MACD:
 		plt.plot(self.data, color='black')
 		plt.title(self.stock_name)
 		plt.xlabel('Date')
-		plt.ylabel('Price [PLN]')
+		plt.ylabel('Closing price [PLN]')
 		plt.savefig(f'plots/{self.stock_name}_graph.png', bbox_inches='tight')
 		plt.close()
 		print(f'Saved data graph at: plots/{self.stock_name}_graph.png')
@@ -179,14 +179,14 @@ class MACD:
 		buy_disabled = operations[(operations["type"] == self.Operation.BUY)&(operations["disabled"] == True)]
 		sell_disabled = operations[(operations["type"] == self.Operation.SELL)&(operations["disabled"] == True)]
 		plt.figure(figsize=(16, 6), dpi=200)
-		plt.plot(self.data.index, self.data, label='Price [PLN]')
+		plt.plot(self.data.index, self.data, label='Closing price [PLN]')
 		plt.scatter(buy_operations.index, buy_operations['price'], marker='^', color='green', label='BUY')
 		plt.scatter(sell_operations.index, sell_operations['price'], marker='v', color='red', label='SELL')
 		plt.scatter(buy_disabled.index, buy_disabled['price'], marker='^', color='lightgreen', label='BUY_DISABLED')
 		plt.scatter(sell_disabled.index, sell_disabled['price'], marker='v', color='lightcoral', label='SELL_DISABLED')
 		plt.title(f'Simulation of {self.stock_name} trading (ΔT={self.improve_delay})')
 		plt.xlabel('Date')
-		plt.ylabel('Balance [PLN]')
+		plt.ylabel('Closing price [PLN]')
 		plt.legend()
 		filename = f'plots/{self.stock_name}_buysell_dT{self.improve_delay}.png'
 		plt.savefig(filename, bbox_inches='tight')
@@ -203,14 +203,14 @@ class MACD:
 		buy_disabled = operations[(operations["type"] == self.Operation.BUY)&(operations["disabled"] == True)]
 		sell_disabled = operations[(operations["type"] == self.Operation.SELL)&(operations["disabled"] == True)]
 		plt.figure(figsize=(16, 6), dpi=200)
-		plt.plot(data_fragment.index, data_fragment, label='Price [PLN]')
+		plt.plot(data_fragment.index, data_fragment, label='Closing price [PLN]')
 		plt.scatter(buy_operations.index, buy_operations['price'], marker='^', color='green', label='BUY')
 		plt.scatter(sell_operations.index, sell_operations['price'], marker='v', color='red', label='SELL')
 		plt.scatter(buy_disabled.index, buy_disabled['price'], marker='^', color='lightgreen', label='BUY_DISABLED')
 		plt.scatter(sell_disabled.index, sell_disabled['price'], marker='v', color='lightcoral', label='SELL_DISABLED')
 		plt.title(f'Simulation of {self.stock_name} trading')
 		plt.xlabel('Date')
-		plt.ylabel('Balance [PLN]')
+		plt.ylabel('Closing price [PLN]')
 		plt.legend()
 		filename = f'plots/{self.stock_name}_buysell_{str(date_from).split(" ")[0]}_{str(date_to).split(" ")[0]}_dT{self.improve_delay}.png'
 		plt.savefig(filename, bbox_inches='tight')
@@ -222,7 +222,7 @@ if __name__ == '__main__':
 	macd_usd.print_data_graph()
 	macd_usd.calculate_macd()
 	macd_usd.plot_macd()
-	macd_usd.buy_sell()
+	macd_usd.buy_sell(problems_detection=True)
 	macd_usd.plot_balance()
  
 	dT_results = []
@@ -239,7 +239,7 @@ if __name__ == '__main__':
 	macd_nwg.print_data_graph()
 	macd_nwg.calculate_macd()
 	macd_nwg.plot_macd()
-	macd_nwg.buy_sell()
+	macd_nwg.buy_sell(problems_detection=True)
 	macd_nwg.plot_balance()
  
 	dT_results = []
